@@ -1,0 +1,21 @@
+current directory: C:/Users/sonav/OneDrive/Desktop/resume-template-gh-pages/resume-template-gh-pages/_vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+C:/Ruby33/bin/ruby.exe extconf.rb
+checking for onig_region_memsize() in ruby.h... yes
+checking for rb_reg_onig_match() in ruby.h... yes
+creating Makefile
+
+current directory: C:/Users/sonav/OneDrive/Desktop/resume-template-gh-pages/resume-template-gh-pages/_vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240816-11108-za60u sitelibdir\=./.gem.20240816-11108-za60u clean
+
+current directory: C:/Users/sonav/OneDrive/Desktop/resume-template-gh-pages/resume-template-gh-pages/_vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240816-11108-za60u sitelibdir\=./.gem.20240816-11108-za60u
+generating strscan-i386-mingw32.def
+compiling strscan.c
+linking shared-object strscan.so
+
+current directory: C:/Users/sonav/OneDrive/Desktop/resume-template-gh-pages/resume-template-gh-pages/_vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240816-11108-za60u sitelibdir\=./.gem.20240816-11108-za60u install
+/usr/bin/install -c -m 0755 strscan.so ./.gem.20240816-11108-za60u
+
+current directory: C:/Users/sonav/OneDrive/Desktop/resume-template-gh-pages/resume-template-gh-pages/_vendor/bundle/ruby/3.3.0/gems/strscan-3.1.0/ext/strscan
+make DESTDIR\= sitearchdir\=./.gem.20240816-11108-za60u sitelibdir\=./.gem.20240816-11108-za60u clean
