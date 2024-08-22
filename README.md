@@ -1,66 +1,121 @@
-# Resume template
+# Addressable
 
-*A simple Jekyll + GitHub Pages powered resume template.*
+<dl>
+  <dt>Homepage</dt><dd><a href="https://github.com/sporkmonger/addressable">github.com/sporkmonger/addressable</a></dd>
+  <dt>Author</dt><dd><a href="mailto:bob@sporkmonger.com">Bob Aman</a></dd>
+  <dt>Copyright</dt><dd>Copyright © Bob Aman</dd>
+  <dt>License</dt><dd>Apache 2.0</dd>
+</dl>
 
-![img](images/screenshot.png)
+[![Gem Version](https://img.shields.io/gem/dt/addressable.svg)][gem]
+[![Build Status](https://github.com/sporkmonger/addressable/workflows/CI/badge.svg)][actions]
+[![Test Coverage Status](https://img.shields.io/coveralls/sporkmonger/addressable.svg)][coveralls]
+[![Documentation Coverage Status](https://inch-ci.org/github/sporkmonger/addressable.svg?branch=master)][inch]
 
-## Docs
+[gem]: https://rubygems.org/gems/addressable
+[actions]: https://github.com/sporkmonger/addressable/actions
+[coveralls]: https://coveralls.io/r/sporkmonger/addressable
+[inch]: https://inch-ci.org/github/sporkmonger/addressable
 
-### Running locally
+# Description
 
-To test locally, run the following in your terminal:
+Addressable is an alternative implementation to the URI implementation
+that is part of Ruby's standard library. It is flexible, offers heuristic
+parsing, and additionally provides extensive support for IRIs and URI templates.
 
-1. Clone repo locally
-1. `bundle install`
-2. `bundle exec jekyll serve`
-3. Open your browser to `localhost:4000`
+Addressable closely conforms to RFC 3986, RFC 3987, and RFC 6570 (level 4).
 
-### Running locally with Docker
+# Reference
 
-To test locally with docker, run the following in your terminal after installing docker into your system:
+- {Addressable::URI}
+- {Addressable::Template}
 
-1. `docker image build -t resume-template .`
-2. `docker run --rm --name resume-template -v "$PWD":/home/app --network host resume-template`
+# Example usage
 
-### Customizing
+```ruby
+require "addressable/uri"
 
-First you'll want to fork the repo to your own account. Then clone it locally and customize, or use the GitHub web editor to customize.
+uri = Addressable::URI.parse("http://example.com/path/to/resource/")
+uri.scheme
+#=> "http"
+uri.host
+#=> "example.com"
+uri.path
+#=> "/path/to/resource/"
 
-#### Options/configuration
+uri = Addressable::URI.parse("http://www.詹姆斯.com/")
+uri.normalize
+#=> #<Addressable::URI:0xc9a4c8 URI:http://www.xn--8ws00zhy3a.com/>
+```
 
-Most of the basic customization will take place in the `/_config.yml` file. Here is a list of customizations available via `/_config.yml`:
 
-[...write these out...]
+# URI Templates
 
-#### Editing content
+For more details, see [RFC 6570](https://www.rfc-editor.org/rfc/rfc6570.txt).
 
-Most of the content configuration will take place in the `/_layouts/resume.html` file. Simply edit the markup there accordingly
 
-### Publishing to GitHub Pages for free
+```ruby
 
-[GitHub Pages](https://pages.github.com/) will host this for free with your GitHub account. Just make sure you're using a `gh-pages` branch, and the site will automatically be available at `yourusername.github.io/resume-template` (you can rename the repo to resume for your own use if you want it to be available at `yourusername.github.io/resume`). You can also add a CNAME if you want it to be available at a custom domain...
+require "addressable/template"
 
-### Configuring with your own domain name
+template = Addressable::Template.new("http://example.com/{?query*}")
+template.expand({
+  "query" => {
+    'foo' => 'bar',
+    'color' => 'red'
+  }
+})
+#=> #<Addressable::URI:0xc9d95c URI:http://example.com/?foo=bar&color=red>
 
-To setup your GH Pages site with a custom domain, [follow the instructions](https://help.github.com/articles/setting-up-a-custom-domain-with-github-pages/) on the GitHub Help site for that topic.
+template = Addressable::Template.new("http://example.com/{?one,two,three}")
+template.partial_expand({"one" => "1", "three" => 3}).pattern
+#=> "http://example.com/?one=1{&two}&three=3"
 
-### Themes
+template = Addressable::Template.new(
+  "http://{host}{/segments*}/{?one,two,bogus}{#fragment}"
+)
+uri = Addressable::URI.parse(
+  "http://example.com/a/b/c/?one=1&two=2#foo"
+)
+template.extract(uri)
+#=>
+# {
+#   "host" => "example.com",
+#   "segments" => ["a", "b", "c"],
+#   "one" => "1",
+#   "two" => "2",
+#   "fragment" => "foo"
+# }
+```
 
-Right now resume-template only has one theme. More are coming :soon: though. :heart:
+# Install
 
-## Roadmap
+```console
+$ gem install addressable
+```
 
-A feature roadmap is [available here](https://github.com/jglovier/resume-template/projects/1). If you features suggestions, please [open a new issue](https://github.com/jglovier/resume-template/issues/new).
+You may optionally turn on native IDN support by installing libidn and the
+idn gem:
 
-## Contributing
+```console
+$ sudo apt-get install libidn11-dev # Debian/Ubuntu
+$ brew install libidn # OS X
+$ gem install idn-ruby
+```
 
-If you spot a bug, or want to improve the code, or even make the dummy content better, you can do the following:
+# Semantic Versioning
 
-1. [Open an issue](https://github.com/jglovier/resume-template/issues/new) describing the bug or feature idea
-2. Fork the project, make changes, and submit a pull request
+This project uses [Semantic Versioning](https://semver.org/). You can (and should) specify your
+dependency using a pessimistic version constraint covering the major and minor
+values:
 
-## License
+```ruby
+spec.add_dependency 'addressable', '~> 2.7'
+```
 
-The code and styles are licensed under the MIT license. [See project license.](LICENSE) Obviously you should not use the content of this demo repo in your own resume. :wink:
+If you need a specific bug fix, you can also specify minimum tiny versions
+without preventing updates to the latest minor release:
 
-Disclaimer: Use of Lisa M. Simpson image and name used under [Fair Use](https://en.wikipedia.org/wiki/Fair_use) for educational purposes. Project license does not apply to use of this material.
+```ruby
+spec.add_dependency 'addressable', '~> 2.3', '>= 2.3.7'
+```
